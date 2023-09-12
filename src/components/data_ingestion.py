@@ -8,6 +8,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
 
 
 @dataclass
@@ -20,7 +22,7 @@ class DataIngestion:
     def __init__(self):
         self.ingestion_config=DataIngestionConfig()
 
-    def iniate_data_ingestion(self):
+    def initiate_data_ingestion(self):
         logging.info("Activation des données")
         try:
             df=pd.read_csv('notebook\data\stud.csv')
@@ -47,9 +49,11 @@ class DataIngestion:
             raise CustomException(e,sys)
 
 if __name__=="__main__":
-    logging.info("essaye TEST") 
     obj=DataIngestion()
-    obj.iniate_data_ingestion()
+    train_data,test_data=obj.initiate_data_ingestion()
+
+    datatransf=DataTransformation()
+    datatransf.initiate_data_transformation(train_data,test_data)
 
 
 
