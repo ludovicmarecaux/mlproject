@@ -1,9 +1,11 @@
 pandas
 numpy
 seaborn
-scikit-learn==1.2.0
+scikit-learn
 logger
 category_encoders
 dill
 joblib
+xgboost
+catboost
 #-e .
