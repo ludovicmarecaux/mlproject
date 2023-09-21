@@ -8,4 +8,5 @@ dill
 joblib
 xgboost
 catboost
+optuna
 #-e .

@@ -5,7 +5,7 @@ import os
 import sys
 
 from src.utils import save_object
-from src.utils import evoluate_model
+from src.utils import evaluate_models
 from dataclasses import dataclass
 
 from catboost import CatBoostRegressor
@@ -39,6 +39,7 @@ class ModelTrainer:
 
             )
 
+            
             models = {
                 "Random Forest": RandomForestRegressor(),
                 "Decision Tree": DecisionTreeRegressor(),
@@ -48,13 +49,18 @@ class ModelTrainer:
                 "CatBoosting Regressor": CatBoostRegressor(verbose=False),
                 "AdaBoost Regressor": AdaBoostRegressor(),
             }
+
+
+
             logging.info(f"evaluation des models")
-            model_report:dict=evoluate_model(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models)
+            model_report={}
+            para={}
+            model_report,para=evaluate_models(X_train,y_train,X_test,y_test,models)
             
             #best model score from dictionnary
             
             best_model_score=max(sorted(model_report.values()))
-
+            
             #best model name
 
             best_model_name=list(model_report.keys())[
@@ -62,9 +68,11 @@ class ModelTrainer:
                 ]
             
             best_model=models[best_model_name]
-
-            if best_model_score<0.6:
-                raise CustomException("Pas de modèles pertinents trouvés")
+            
+            #if best_model_score<0.6:
+                #raise CustomException("Pas de modèles pertinents trouvés")
+            best_para=para[best_model_name]
+                    
 
             logging.info(f"Meilleur modèle trouvé sur le train et le test dataset")
 
@@ -73,17 +81,13 @@ class ModelTrainer:
                 obj=best_model
 
             )
-
+            best_model.set_params(**best_para)
+            best_model.fit(X_train,y_train)
             predicted=best_model.predict(X_test)
-
+            
             r2_square=r2_score(y_test,predicted)
-
+            
             return r2_square
-
-
-
-
-
 
 
 
