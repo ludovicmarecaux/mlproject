@@ -67,27 +67,39 @@ class ModelTrainer:
                 list(model_report.values()).index(best_model_score)
                 ]
             
-            best_model=models[best_model_name]
             
-            #if best_model_score<0.6:
-                #raise CustomException("Pas de modèles pertinents trouvés")
+
+            if best_model_name=="CatBoosting Regressor":
+                best_model=CatBoostRegressor()
+            else:
+                best_model=models[best_model_name]
+            
+
+
+            if best_model_score<0.6:
+                raise CustomException("Pas de modèles pertinents trouvés")
+            
             best_para=para[best_model_name]
                     
 
-            logging.info(f"Meilleur modèle trouvé sur le train et le test dataset")
+           
+            logging.info(f"Meilleur modèle trouvé : {best_model}")
 
             save_object(
                 file_path=self.model_trainer_config.model_trainer_path,
                 obj=best_model
 
             )
+            
             best_model.set_params(**best_para)
             best_model.fit(X_train,y_train)
             predicted=best_model.predict(X_test)
             
             r2_square=r2_score(y_test,predicted)
-            
+            r2_adjusted=1 - (1-best_model.score(X_test, y_test))*(len(y_test)-1)/(len(y_test)-X_test.shape[1]-1)
+            print("r2_adjust",r2_adjusted)
             return r2_square
+
 
 
 

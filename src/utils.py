@@ -43,12 +43,13 @@ def save_object(file_path,obj):
 
 def evaluate_models(X_train,y_train,X_test,y_test,models):
     try:
+        optuna.logging.set_verbosity(optuna.logging.WARNING)
         report={}
         para={}
         for i in range(len(list(models))):
             model=list(models.values())[i]
             name=list(models.keys())[i]
-            
+            logging.info(f"entraînement du modèle: {name}")
             if name=="Random Forest":
                 
                 def objective(trial):
@@ -135,17 +136,17 @@ def evaluate_models(X_train,y_train,X_test,y_test,models):
 
             sampler = TPESampler(seed=1)
             study = optuna.create_study(study_name=name, direction="maximize", sampler=sampler)
-            study.optimize(objective, n_trials=5)
+            study.optimize(objective, n_trials=100)
 
-            logging.info(f"best params")
+            
             trial = study.best_params
             
-            logging.info(f"entrainement avec meilleurs paramètre")
+            logging.info(f"Recherche des hyper-paramètres ")
                         
             best_model=model.set_params(**trial)     
                 
             best_model.fit(X_train, y_train)
-            logging.info(f"prediction avec meillers paramètre")
+            logging.info(f"prediction avec les meilleurs paramètres avec le modèle {name}")
             y_train_pred = best_model.predict(X_train)
 
             y_test_pred = best_model.predict(X_test)
