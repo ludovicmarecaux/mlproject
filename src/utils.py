@@ -136,7 +136,7 @@ def evaluate_models(X_train,y_train,X_test,y_test,models):
 
             sampler = TPESampler(seed=1)
             study = optuna.create_study(study_name=name, direction="maximize", sampler=sampler)
-            study.optimize(objective, n_trials=100)
+            study.optimize(objective, n_trials=50)
 
             
             trial = study.best_params
@@ -167,4 +167,13 @@ def evaluate_models(X_train,y_train,X_test,y_test,models):
     except Exception as e:
         CustomException(e,sys)
 
+
+
+def load_object(file_path):
+    try:
+        with open(file_path,"rb") as object:
+            return dill.load(object)
+
+    except Exception as e:
+        CustomException(e,sys)
 
