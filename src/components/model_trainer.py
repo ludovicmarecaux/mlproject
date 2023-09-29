@@ -81,18 +81,19 @@ class ModelTrainer:
             
             best_para=para[best_model_name]
                     
-
+            best_model.set_params(**best_para)
            
             logging.info(f"Meilleur modèle trouvé : {best_model}")
+
+               
+            best_model.fit(X_train,y_train)
 
             save_object(
                 file_path=self.model_trainer_config.model_trainer_path,
                 obj=best_model
 
             )
-            
-            best_model.set_params(**best_para)
-            best_model.fit(X_train,y_train)
+
             predicted=best_model.predict(X_test)
             
             r2_square=r2_score(y_test,predicted)
