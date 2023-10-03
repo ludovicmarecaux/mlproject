@@ -22,7 +22,7 @@ from xgboost import XGBRegressor
 
 @dataclass
 class ModelTrainerConfig:
-    model_trainer_path=os.path.join("artefacts","model.pkl")
+    model_trainer_path=os.path.join("artifacts","model.pkl")
 
 class ModelTrainer:
     def __init__(self):
