@@ -136,7 +136,7 @@ def evaluate_models(X_train,y_train,X_test,y_test,models):
 
             sampler = TPESampler(seed=1)
             study = optuna.create_study(study_name=name, direction="maximize", sampler=sampler)
-            study.optimize(objective, n_trials=100)
+            study.optimize(objective, n_trials=50)
 
             
             trial = study.best_params
