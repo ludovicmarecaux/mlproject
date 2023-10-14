@@ -80,7 +80,7 @@ def evaluate_models(X_train,y_train,X_test,y_test,models):
                             learning_rate=trial.suggest_float('learning_rate',1e-3, 1e-1, log=True),
                             subsample=trial.suggest_float('subsample',0.6,0.9,log=True),
                             criterion=trial.suggest_categorical('criterion',['squared_error', 'friedman_mse']),
-                            max_features=trial.suggest_categorical('max_features',['auto','sqrt','log2']),
+                            max_features=trial.suggest_categorical('max_features',[1,'sqrt','log2']),
                             n_estimators=trial.suggest_int('n_estimators',8,256)
                             )
                         algo.fit(X_train, y_train)

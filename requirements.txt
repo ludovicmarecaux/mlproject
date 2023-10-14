@@ -1,7 +1,7 @@
 pandas
 numpy
 seaborn
-scikit-learn
+scikit-learn==1.3.1
 logger
 category_encoders
 dill
@@ -10,4 +10,4 @@ xgboost
 catboost
 optuna
 Flask
-#-e .
+-e .
